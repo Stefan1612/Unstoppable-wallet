@@ -126,14 +126,6 @@ function Header({
               {page}
             </MenuItem>
           ))}
-          <MenuItem
-            to="#enter-lottery"
-            /*   component={HashLink} */
-            smooth
-            onClick={closeMenu}
-          >
-            time machine
-          </MenuItem>
         </Menu>
         <Box
           sx={{
@@ -161,7 +153,7 @@ function Header({
           ))}
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
             <Box>
-              Associated Address:{" "}
+              Unstoppable Address:{" "}
               {udLoginAddress !== ""
                 ? udLoginAddress
                 : handleStorageUdLoginAddress()}
@@ -175,16 +167,7 @@ function Header({
                 : handleStorageUdLoginDomain()}
             </Box>
           </Box>
-          <Button
-            to="#entry"
-            size="medium"
-            /*   component={HashLink} */
-            smooth
-            variant="contained"
-            sx={{ fontWeight: 700, backgroundColor: "#00e676" }}
-          >
-            Lottery
-          </Button>
+
           {/*--------------------------------------------------------------------------*/}
           <Button
             onClick={(e) => handleCloseAndLogout()}
@@ -193,7 +176,7 @@ function Header({
             /*   component={HashLink} */
             smooth
             variant="contained"
-            sx={{ fontWeight: 700, backgroundColor: "#00e676" }}
+            sx={{ fontWeight: 700, backgroundColor: "#4c47f7" }}
           >
             Logout
           </Button>
@@ -203,15 +186,15 @@ function Header({
       </Toolbar>
       <Box sx={{ marginLeft: "25vw" }} marginTop={34}>
         <Button variant="contained">
-          <a href="#entryButton">Enter</a>
+          <a href="#sendTx">Transfer Tokens</a>
         </Button>
-        <Button
+        {/*   <Button
           variant="outlined"
           sx={{ marginLeft: "5px" }}
           onClick={(e) => FirstLoad()}
         >
           Metamask
-        </Button>
+        </Button> */}
       </Box>
     </AppBar>
   );

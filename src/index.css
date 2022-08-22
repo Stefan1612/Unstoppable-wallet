@@ -1,13 +1,93 @@
-body {
+* {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Roboto";
+  background-color: "#0x1a1b1a";
+}
+a,
+a:hover,
+a:focus,
+a:active {
+  text-decoration: none;
+  color: inherit;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+#pages {
+  margin: 0;
+
+  background: rgb(37, 1, 84);
+  background: linear-gradient(
+    90deg,
+    rgba(37, 1, 84, 1) 0%,
+    rgba(221, 177, 240, 1) 100%
+  );
+  animation: gradientBG 12s ease infinite;
+  background-size: 400% 400%;
+}
+@keyframes gradientBG {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+.UDLogOut {
+  background-color: #4c47f7;
+  color: white;
+  padding: 10px 80px 14px 80px;
+  border: none;
+  border-radius: 5px;
+  font-size: 100%;
+  font-weight: 700;
+}
+.UDButtonLogOut {
+  background-color: #4c47f7;
+  color: white;
+  padding: 10px 80px 14px 80px;
+  border: none;
+  border-radius: 5px;
+  font-size: 70%;
+  font-weight: 700;
+}
+
+.changeImage {
+  background-color: url("images/default-button.png");
+}
+.changeImage:hover {
+  background-color: url("images/hover-button.png");
+}
+.loader-wrapper {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #0b0b0b;
+  display: grid;
+  place-items: center;
+}
+.loader {
+  border: 16px solid #e3e3e3;
+  border-top: 16px solid #3498db;
+  border-radius: 50%;
+  width: 140px;
+  height: 140px;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.pointer {
+  cursor: pointer;
 }

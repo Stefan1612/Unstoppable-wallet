@@ -1,16 +1,8 @@
 import React, { useRef, useEffect, useState } from "react";
-import { Container, Typography, Box, Grid } from "@mui/material";
+import { Box } from "@mui/material";
 import rings from "vanta/dist/vanta.rings.min";
 
-/* import Calendar from "./Calendar"; */
-/* import Header from "./Header";
-import Footer from "./Footer"; */
-/* import Propose from "./Propose"; */
-/* import Title from "./Title"; */
-/* import Faq from "./Faq"; */
-/* import Roadmap from "./Roadmap"; */
-
-function Main({ account, network, getAccount }) {
+function Main() {
   const [vantaEffect, setVantaEffect] = useState(0);
 
   const myRef = useRef(null);

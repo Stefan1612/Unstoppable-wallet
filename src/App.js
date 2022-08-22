@@ -11,7 +11,17 @@ import hoverButton from "./images/pressed-button.png";
 import Header from "./Components/Header";
 import theme from "./Components/theme/theme";
 import Main from "./Components/Main";
-import { Container, Box, ThemeProvider } from "@mui/material";
+import {
+  Container,
+  Box,
+  ThemeProvider,
+  Button,
+  Typography,
+  Input,
+} from "@mui/material";
+
+import * as HyphenWidget from "@biconomy/hyphen-widget";
+import "@biconomy/hyphen-widget/dist/index.css";
 function App() {
   const [account, setAccount] = useState("");
 
@@ -121,10 +131,10 @@ function App() {
     provider = new ethers.providers.Web3Provider(window.ethereum);
   }
 
-  const infuraProvider = new ethers.providers.InfuraProvider("kovan", {
+  /* const infuraProvider = new ethers.providers.InfuraProvider("kovan", {
     projectId: process.env.REACT_APP_PROJECT_ID,
     projectSecret: process.env.REACT_APP_PROJECT_SECRET,
-  });
+  }); */
   async function getAccount() {
     if (typeof window.ethereum !== "undefined") {
       const accounts = await window.ethereum.request({
@@ -199,22 +209,22 @@ function App() {
   }, []);
 
   let gas_price = 0;
+  const [to_send, setTo_send] = useState("");
 
-  const tx = {
-    from: account,
-    to: "0x711619FbaD6327Eb48902AB130CC9bBeb06331c6",
-    value: ethers.utils.parseEther("0.01"),
-    nonce: infuraProvider.getTransactionCount(
-      "0x711619FbaD6327Eb48902AB130CC9bBeb06331c6",
-      "latest"
-    ),
-    gasLimit: ethers.utils.hexlify(100000), // 100000
-    gasPrice: infuraProvider.getGasPrice(),
-    // data: "some Data",
-  };
   async function startTx() {
     // get current gas price
-    gas_price = await infuraProvider.getGasPrice();
+    const tx = {
+      from: account,
+      to: to_send /* "0x711619FbaD6327Eb48902AB130CC9bBeb06331c6" */,
+      value: ethers.utils.parseEther("0.01"),
+      nonce: provider.getTransactionCount(
+        to_send /* "0x711619FbaD6327Eb48902AB130CC9bBeb06331c6" */,
+        "latest"
+      ),
+      gasLimit: ethers.utils.hexlify(100000), // 100000
+      gasPrice: provider.getGasPrice(),
+      // data: "some Data",
+    };
     provider = new ethers.providers.Web3Provider(window.ethereum);
     provider
       .getSigner()
@@ -225,30 +235,62 @@ function App() {
       });
   }
 
+  const handleToSendAddressChange = (e) => {
+    setTo_send(e.target.value);
+    console.log(to_send);
+  };
+  const [hyphenWidget, setHyphenWidget] = useState();
+
+  function startBico() {
+    const widget = HyphenWidget.default.init(
+      document.getElementById("widget"),
+      {
+        tag: "expecto-patronum",
+        showWidget: true,
+        showCloseButton: true,
+      }
+    );
+
+    if (widget) {
+      setHyphenWidget(widget);
+    }
+  }
+  useEffect(() => {
+    /*  if (
+      udLoginAddress !== "" &&
+      localStorage.getItem("UdLoginDomain") !== null
+    ) { */
+    /*   const widget = HyphenWidget.default.init(
+      document.getElementById("widget"),
+      {
+        tag: "expecto-patronum",
+        showWidget: true,
+        showCloseButton: true,
+      }
+    );
+
+    if (widget) {
+      setHyphenWidget(widget);
+    } */
+    /*   } */
+  }, []);
+
+  function handleOpen() {
+    hyphenWidget.open();
+  }
+
+  function handleClose() {
+    hyphenWidget.close();
+  }
+
   if (udLoginAddress === "" && localStorage.getItem("UdLoginDomain") === null) {
     return (
       <div
         className="pages"
-        style={{ height: "100vh", backgroundColor: "black" }}
+        style={{ height: "100vh", backgroundColor: "#212121" }}
       >
-        <div
-          className="text-center"
-          style={{ paddingTop: "28vh", marginRight: "5vw" }}
-        >
-          {
-            // eslint-disable-next-line
-          }
-          {/* <img src={logo}></img> */}
-        </div>
-
-        <div
-          style={{
-            paddingTop: "2vh",
-            margin: "auto",
-            textAlign: "center",
-            marginTop: "10vh",
-          }}
-        >
+        <Box sx={{ paddingTop: "33vh", marginLeft: "38vw" }}>
+          {" "}
           <img
             alt="UnstoppableLoginButton"
             onMouseEnter={() => handleMouseEnter()}
@@ -257,7 +299,7 @@ function App() {
             className="pointer"
             onClick={() => handleLoginButtonClick()}
           ></img>
-        </div>
+        </Box>
       </div>
     );
   }
@@ -270,8 +312,7 @@ function App() {
         udLoginDomain={udLoginDomain}
         udLoginAddress={udLoginAddress}
       />
-      {/* <NavbarTwo /> */}
-      {/*  <BackgroundImage /> */}
+
       <Main network={network} account={account} getAccount={getAccount} />
       <Box
         id="background"
@@ -286,20 +327,120 @@ function App() {
             crossOrigin="anonymous"
             referrerPolicy="no-referrer"
           />
-          <Box>
-            <button onClick={(e) => startTx()}>send Tx</button>
-          </Box>
-          {/*   <Box id="faq">
-            <FAQ></FAQ>
-          </Box>
-          <footer id="footer">
-            <i className="fab fa-github">&nbsp;&nbsp;&nbsp; </i>
-            <i className="fab fa-twitter">&nbsp;&nbsp;&nbsp; </i>
-            <i className="fab fa-discord">&nbsp;&nbsp;&nbsp;</i>
-            <i className="fab fa-linkedin-in">&nbsp;&nbsp;&nbsp;</i>
-            <i className="fab fa-youtube">&nbsp;&nbsp;&nbsp;</i>
-          </footer> */}
         </Container>
+        <Box
+          id="background"
+          sx={{ backgroundColor: "#212121", minHeight: "100vh" }}
+        >
+          <Container>
+            <Box id="sendTx" paddingTop={"5vh"} /* marginBottom={"5vh"} */>
+              <Box
+                sx={{
+                  marginTop: "20vh",
+                  padding: "10px",
+                  textAlign: "center",
+                  color: "white",
+                  border: "solid",
+                }}
+              >
+                Current connected and using this address: {account}
+                <br></br>
+                Who do you want to send ether to? Input receiver address.
+                <br></br>
+                <Input
+                  placeholder="0x5507d4cAE50d871Fa64f66e620E7AC270aCC13Cd"
+                  onChange={(e) => handleToSendAddressChange(e)}
+                />
+                <br></br>
+                How much ether do you want to send the receiver?
+                <br></br>
+                <Input
+                  placeholder="0.01"
+                  onChange={(e) => handleToSendAddressChange(e)}
+                />
+                <br></br>
+                <Button
+                  variant="outlined"
+                  sx={{ marginTop: "10px" /* , color: "white" */ }}
+                  onClick={(e) => getAccount()}
+                >
+                  Connect Metamask
+                </Button>
+                <Button
+                  sx={{ marginTop: "10px" }}
+                  variant="contained"
+                  onClick={(e) => startTx()}
+                >
+                  send Tx
+                </Button>
+              </Box>
+              <Box sx={{ color: "white" }}>
+                <Typography
+                  paddingTop={"15vh"}
+                  sx={{ textAlign: "center" }}
+                ></Typography>
+                <Typography>
+                  Press this button if you are trying to transfer funds across
+                  different chains
+                </Typography>
+                <Button
+                  sx={{ textAlign: "center", margin: "auto" }}
+                  variant={"contained"}
+                  onClick={(e) => startBico()}
+                >
+                  Initialize Cross Chain
+                </Button>
+              </Box>
+              <Box
+                id="pages"
+                /*  paddingBottom={"10vh"} */
+                backgroundColor={"#212121"}
+              >
+                <form className="form-inline text-center">
+                  <i className="fas fa-cat"></i>
+                </form>
+                <Typography
+                  component={"h2"}
+                  variant={"h1"}
+                  align="center"
+                  color={"secondary"}
+                >
+                  Cross Chain Transfer
+                </Typography>
+
+                <br></br>
+                <div
+                  className="col-md-10 offset-md-1 d-flex justify-content-around"
+                  style={{ marginTop: "6vh" }}
+                >
+                  <Container>
+                    <Box>
+                      {" "}
+                      <div class="widget-container">
+                        <div id="widget"></div>
+                      </div>
+                      <Button
+                        variant="contained"
+                        sx={{ backgroundColor: "white", color: "black" }}
+                        onClick={handleOpen}
+                      >
+                        Open Widget
+                      </Button>
+                      &nbsp; &nbsp;
+                      <Button
+                        variant="contained"
+                        sx={{ backgroundColor: "white", color: "black" }}
+                        onClick={handleClose}
+                      >
+                        Close Widget
+                      </Button>
+                    </Box>
+                  </Container>
+                </div>
+              </Box>
+            </Box>
+          </Container>
+        </Box>
       </Box>
     </ThemeProvider>
   );
