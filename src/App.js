@@ -41,7 +41,8 @@ function App() {
     scope: "openid wallet",
 
     // This is the url that the auth server will redirect back to after every authorization attempt.
-    redirectUri: "http://localhost:3000",
+    redirectUri:
+      "https://lustrous-taiyaki-a77392.netlify.app/" /* "http://localhost:3000" */,
   });
 
   // eslint-disable-next-line
@@ -209,13 +210,14 @@ function App() {
   }, []);
 
   const [to_send, setTo_send] = useState("");
+  const [ether_send, setEther_send] = useState("0");
 
   async function startTx() {
     // get current gas price
     const tx = {
       from: account,
       to: to_send /* "0x711619FbaD6327Eb48902AB130CC9bBeb06331c6" */,
-      value: ethers.utils.parseEther("0.01"),
+      value: ethers.utils.parseEther(ether_send),
       nonce: provider.getTransactionCount(
         to_send /* "0x711619FbaD6327Eb48902AB130CC9bBeb06331c6" */,
         "latest"
@@ -238,6 +240,12 @@ function App() {
     setTo_send(e.target.value);
     console.log(to_send);
   };
+
+  const handleChange = (e) => {
+    setEther_send(e.target.value);
+    console.log(ether_send);
+  };
+
   const [hyphenWidget, setHyphenWidget] = useState();
 
   function startBico() {
@@ -353,10 +361,7 @@ function App() {
                 <br></br>
                 How much ether do you want to send the receiver?
                 <br></br>
-                <Input
-                  placeholder="0.01"
-                  onChange={(e) => handleToSendAddressChange(e)}
-                />
+                <Input placeholder="0.01" onChange={(e) => handleChange(e)} />
                 <br></br>
                 <Button
                   variant="outlined"
