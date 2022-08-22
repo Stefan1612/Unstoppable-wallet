@@ -208,7 +208,6 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  let gas_price = 0;
   const [to_send, setTo_send] = useState("");
 
   async function startTx() {
